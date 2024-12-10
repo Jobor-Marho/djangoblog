@@ -224,7 +224,7 @@ def register(request):
             user = User.objects.get(email=request.POST.get('email'))
         except User.DoesNotExist:
             new_user = User()
-            new_user.name = f'{request.POST.get('firstname')} {request.POST.get('lastname')}'
+            new_user.name = f"{request.POST.get('firstname')} {request.POST.get('lastname')}"
             new_user.email = request.POST.get('email')
             new_user.password = make_password(request.POST.get('password'))
             new_user.save()
