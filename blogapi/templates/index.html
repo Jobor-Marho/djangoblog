@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <!-- Page Header-->
+    <header class="masthead" style="background-image: url({% static 'assets/img/home-bg.jpg'  %})"
+    id="top">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>Frederick's Blog</h1>
+                        <span class="subheading">Get the latest gists</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content-->
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <!-- Post preview-->
+                {% if user.pk == 1 and user.is_authenticated %}
+                    {% if feed %}
+                        {% for gist in feed %}
+
+                            <div class="post-preview">
+                                <a href="{% url 'blog:get-post' pk=gist.pk %}">
+                                    <h2 class="post-title">{{ gist.title|title }}</h2>
+                                    <h3 class="post-subtitle">{{ gist.subtitle }}</h3>
+                                </a>
+                                <p class="post-meta">
+                                    Posted by
+                                    <a href="#!">{{ gist.author.username|title }}</a>
+                                    on {{ gist.date }}
+                                    <a href="{% url 'blog:delete' pk=gist.pk %}">
+                                        ✖
+                                    </a>
+                                </p>
+                            </div>
+                        {% endfor %}
+
+                        <hr class="my-4" />
+                        <!-- Pager-->
+                        <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase"
+                                                                    href="{% url 'blog:new-post' %}">Create Post →</a>
+                        </div>
+                    {% else %}
+                        <div class="d-flex justify-content-center mb-4"><a class="btn btn-primary text-uppercase"
+                                                                    href="{% url 'blog:new-post' %}">Create Post →</a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    {% for gist in feed %}
+                        <div class="post-preview">
+                            <a href="{% url 'blog:get-post' pk=gist.pk %}">
+                                <h2 class="post-title">{{ gist.title |title }}</h2>
+                                <h3 class="post-subtitle">{{ gist.subtitle }}</h3>
+                            </a>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="{% url 'blog:about' %}">{{ gist.author.username |title }}</a>
+                                on {{ gist.date }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

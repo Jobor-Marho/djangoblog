@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+  
+<header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1531592937781-344ad608fabf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80')"
+id="top">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Register</h1>
+                    <span class="subheading">Start Contributing to the Blog!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+  
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <form action="{% url 'blog:register' %}" method="post">
+            {% csrf_token %}
+            <div>
+                <label for="" class="form-label">Username</label>
+                <input type="text" name="username" id="" class="form-control">
+            </div>
+            <div>
+                <label for="" class="form-label">First Name</label>
+                <input type="text" name="firstname" id="" class="form-control">
+            </div>
+
+            <div>
+                <label for="" class="form-label">Last Name</label>
+                <input type="text" name="lastname" id="" class="form-control">
+            </div>
+
+            <div>
+                <label for="" class="form-label">Email</label>
+                <input type="email" name="email" id="" class="form-control">
+            </div>
+
+            <div>
+                <label for="" class="form-label">Password</label>
+                <input type="password" name="password" id="" class="form-control">
+            </div>
+
+            <div class="text-center"><button class="btn btn-lg btn-primary">Post</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

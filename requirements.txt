@@ -1,0 +1,12 @@
+asgiref==3.8.1
+Django==5.0.9
+django-gravatar2==1.4.5
+django-js-asset==2.2.0
+djangorestframework==3.15.2
+mssql-django==1.5
+pillow==11.0.0
+psycopg2-binary==2.9.10
+pyodbc==5.2.0
+python-dotenv==1.0.1
+pytz==2024.2
+sqlparse==0.5.1
