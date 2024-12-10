@@ -58,6 +58,7 @@ GRAVATAR_DEFAULT_SECURE = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,6 +98,10 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+
+#Postgresql db
+
 DATABASES = {
     "default":  dj_database_url.parse(os.environ.get('DB_URL'))
 }
@@ -138,7 +143,8 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-STATIC_ROOT = STATIC_DIR
+STATICFILES_DIRS = [BASE_DIR / 'static']  # If you have a static folder in your project
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -158,3 +164,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Email Credentials
 HOST_USER = os.environ.get('HOST_USER')
 HOST_PASSWORD = os.environ.get('HOST_PASSWORD')
+
+
+#whitenoise for staticfiles
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
