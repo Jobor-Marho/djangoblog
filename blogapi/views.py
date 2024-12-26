@@ -198,7 +198,7 @@ def create_post(request):
         return redirect("/")
     return render(request, "make-post.html")
 
-@login_required
+
 def get_post(request, pk):
     feed = BlogPost.objects.get(pk=pk)
 
@@ -209,7 +209,12 @@ def get_post(request, pk):
     if request.method == 'POST':
         # Handle new comment submission
         comment_text = request.POST.get('comment')
-        new_comment = Comment(comment_author=request.user, comment_text=comment_text, blog_post=feed)
+        try:
+            new_comment = Comment(comment_author=request.user, comment_text=comment_text, blog_post=feed)
+        except:
+            error = "Please Login and try again."
+            messages.error(request, error)
+            return redirect('blog:login')
         new_comment.save()
         return redirect('blog:get-post', pk=feed.pk)
 
