@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import dj_database_url
 
+
+def str_to_bool(value):
+    return str(value).lower() in ('true', '1', 'yes')
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR.joinpath('blogapi/templates')
@@ -32,7 +37,7 @@ load_dotenv()
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DEBUG = str_to_bool(os.environ.get('DEBUG'))
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
 
@@ -49,7 +54,7 @@ INSTALLED_APPS = [
     'blogapi',
     'django_gravatar',
 
-    
+
 ]
 GRAVATAR_DEFAULT_IMAGE = 'identicon'
 GRAVATAR_DEFAULT_SIZE = 40

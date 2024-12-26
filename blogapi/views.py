@@ -1,5 +1,6 @@
 # REST FRAMEWORK
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 # from .serializers import PostSerializer
@@ -59,7 +60,7 @@ def is_admin(func):
 #         if request.method == 'GET':
 #             serializer = PostSerializer(getpost)
 #             return Response(serializer.data)
-        
+
 #         elif request.method == 'PUT':
 #             serializer = PostSerializer(getpost, data=request.data)
 #             if serializer.is_valid():
@@ -127,14 +128,14 @@ def edit(request, pk):
         post.title = request.POST.get('title', post.title)
         post.subtitle = request.POST.get('subtitle', post.subtitle)
         post.body = request.POST.get('body', post.body)
-        
+
         # Handle image upload if a new image is provided
         if 'img' in request.FILES:
             post.img_url = request.FILES['img']
-        
+
         post.save()
-       
-        
+
+
 
         # Redirect to the blog post's detail page after updating
         return redirect('blog:get-post', pk=post.pk)
@@ -145,22 +146,22 @@ def edit(request, pk):
 
 
 def login_user(request):
-    
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        
-        
+
+
         try:
             user = User.objects.get(username=username)
-            
+
         except User.DoesNotExist:
             error = "This email does not exist. Please try again."
             messages.error(request, error)
             return redirect('blog:login')
         else:
             if check_password(password, user.password):
-                
+
                 login(request, user)
                 return redirect("blog:home")
             else:
@@ -193,13 +194,14 @@ def create_post(request):
             data  = {}
             data['error'] = "A blog post with this title already exists."
             return render(request, 'edit.html', data)
-        
+
         return redirect("/")
     return render(request, "make-post.html")
 
+@login_required
 def get_post(request, pk):
     feed = BlogPost.objects.get(pk=pk)
-    
+
     # Fetch comments for the post
     comments = Comment.objects.filter(blog_post=feed)
 
@@ -216,10 +218,10 @@ def get_post(request, pk):
 
 
 def register(request):
-    
+
     if request.method == "POST":
         # Check to see if you can find the email of the new user if it exists
-        
+
         try:
             user = User.objects.get(email=request.POST.get('email'))
         except User.DoesNotExist:
@@ -235,5 +237,5 @@ def register(request):
             return redirect('blog:login')
     return render(request, "register.html")
 
-    
+
 
