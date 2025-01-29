@@ -223,24 +223,32 @@ def get_post(request, pk):
 
 
 def register(request):
-
     if request.method == "POST":
-        # Check to see if you can find the email of the new user if it exists
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        firstname = request.POST.get('firstname')
+        lastname = request.POST.get('lastname')
+        password = request.POST.get('password')
 
-        try:
-            user = User.objects.get(email=request.POST.get('email'))
-        except User.DoesNotExist:
-            new_user = User()
-            new_user.name = f"{request.POST.get('firstname')} {request.POST.get('lastname')}"
-            new_user.email = request.POST.get('email')
-            new_user.password = make_password(request.POST.get('password'))
-            new_user.save()
-            login(request,new_user)
-            return redirect('blog:home')
-        else:
-            error = 'Sorry that username has already been registered. Login Instead.'
+        # Check if a user with the same email or username already exists
+        if User.objects.filter(email=email).exists():
+            error = 'Sorry, that email is already registered. Login instead.'
             return redirect('blog:login')
+
+        if User.objects.filter(username=username).exists():
+            error = 'Sorry, that username is already taken. Choose a different one.'
+            return render(request, "register.html", {"error": error})
+
+        # Create new user
+        new_user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            first_name=firstname,
+            last_name=lastname
+        )
+
+        login(request, new_user)
+        return redirect('blog:home')
+
     return render(request, "register.html")
-
-
-
