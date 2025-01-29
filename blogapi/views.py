@@ -236,7 +236,7 @@ def register(request):
             new_user.password = make_password(request.POST.get('password'))
             new_user.save()
             login(request,new_user)
-            return redirect('home')
+            return redirect('blog:home')
         else:
             error = 'Sorry that username has already been registered. Login Instead.'
             return redirect('blog:login')
